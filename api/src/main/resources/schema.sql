@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS account (
+    id BIGINT PRIMARY KEY,
+    holder_name VARCHAR(256)
+);

@@ -1,0 +1,6 @@
+.idea
+/docker/grafana/data
+/docker/postgres/data
+/docker/tempo/data
+/api/target
+.DS_Store

@@ -1,0 +1,41 @@
+# Enables streaming over HTTP, allowing the server to receive traces directly through HTTP
+stream_over_http_enabled: true
+
+# Server configuration section
+server:
+  http_listen_port: 3200               # Sets the HTTP port for the server to listen on (3200)
+  log_level: info                      # Defines the logging level (info)
+
+# Configuration for the query frontend
+query_frontend:
+  search:
+    duration_slo: 5s                   # Sets the service level objective (SLO) for search duration to 5 seconds
+    throughput_bytes_slo: 1.073741824e+09 # SLO for throughput, set to approximately 1GB (1.073 GB)
+  trace_by_id:
+    duration_slo: 5s                   # Sets the SLO for trace-by-ID queries to 5 seconds
+
+# Configuration for the distributor, which handles incoming trace data
+distributor:
+  receivers:                           # Defines receivers for trace ingestion
+    otlp:                              # OpenTelemetry Protocol (OTLP) configuration
+      protocols:
+        http:                          # Enable HTTP protocol for receiving traces
+        grpc:                          # Enable gRPC protocol for receiving traces
+
+# Configuration for the ingester, which processes and stores incoming trace data
+ingester:
+  max_block_duration: 5m               # Maximum duration for the "headblock" before it is cut off (for demo purposes)
+
+# Configuration for the compactor, which manages data retention and compaction of trace blocks
+compactor:
+  compaction:
+    block_retention: 48h               # Sets block retention time to 48 hours
+
+# Storage configuration for trace data
+storage:
+  trace:
+    backend: local                     # Specifies 'local' as the backend for storage
+    wal:
+      path: /var/tempo/wal             # Directory for storing the write-ahead log (WAL) locally
+    local:
+      path: /var/tempo/blocks          # Directory for storing trace blocks locally
